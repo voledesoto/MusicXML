@@ -1,51 +1,57 @@
 from random import randint
-import numpy
 
-fifthsdict = {"Cb": -7, "B": -7, "F#": -6, "Gb": -6, "C#": -5, "Db": -5, "Ab": -4, "Eb": -3, "Bb": -2, "F": -1, "C": 0, "G": 1, "D": 2, "A": 3, "E": 4, "B": 5, "F#": 6, "Gb": 6, "C#": 7, "Db": 7 }
+fifthsdict = {"Cb": -7, "Gb": -6, "Db": -5, "Ab": -4, "Eb": -3, "Bb": -2, "F": -1, "C": 0, "G": 1, "D": 2, "A": 3, "E": 4, "B": 5, "F#": 6, "C#": 7,}
 
 header = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<!DOCTYPE score-partwise PUBLIC\n"-//Recordare//DTD MusicXML 3.1 Partwise//EN"\n"http://www.musicxml.org/dtds/partwise.dtd">\n<score-partwise version="3.1">\n<part-list>\n<score-part id="P1">\n<part-name>Music</part-name>\n</score-part>\n</part-list>\n<part id="P1">\n'
 
-DivCrotch = str(input("Divisions of crotchet: "))
-Key = str(input("Key: "))
-BeatTop = int(input("Beats: "))
-BeatBottom = int(input("Beat type: "))
-CleftType = str(input("Treble clef (1), bass clef (2): "))
-LineNum = str(input("On which line: "))
-if CleftType == "1":
- clef = "G"
-else:
- clef = "F"
+
+def divcrotch():
+      return input("Divisions of crotchet: ")
+def key():
+      global fifthsdict
+      return fifthsdict[str(raw_input("Key: "))]
+def beattop():
+      return input("Beats: ")
+def beatbottom():
+      return input("Beat Type: ")
+def clef():
+      output = str(input("1 Treble, 2 Bass: "))
+      if output == 1:
+        return "G"
+      else:
+        return "F"
+def linenum():   
+      return input("Clef position: ")    
+
+
 
 #or with notes use 'keypositions+x % 21'
 #x being the step between the keys in a circle
 #(%21 is so that you don't leave length of the array)
 octaveposition = 4
-starting_note_key = str(input("Which key to start in: "))
 measurenumber = 1
-TotalBeats = float(BeatTop/BeatBottom)
+TotalBeats = str()
 
-def setupstart(div, key, beat, beattype, cleft, line):
- cleftime = """<measure number="""+"\""str(measurenumber)+"\""+""">
- <attributes>
-    <divisions>"""+str(div)+"""</divisions>
-      <key>
-        <fifths>"""+str(fifthsdict[key])+"""</fifths>
-      </key>
-      <time>
-        <beats>"""+str(beat)+"""</beats>
-        <beat-type>"""+str(beattype)+"""</beat-type>
-      </time>
-      <clef>
-        <sign>"""+str(cleft)+"""</sign>
-        <line>"""+str(line)+"""</line>
-      </clef>
-  </attributes>"""
- return cleftime
+def setupstart():
+  global measurenumber  
+  cleftime = """<measure number=""" + str(measurenumber) +""">
+      <attributes>
+          <divisions>""" + str(divcrotch()) +"""</divisions>
+            <key>
+              <fifths>""" + str(key()) + """</fifths>
+            </key>
+            <time>
+              <beats>""" + str(beattop()) + """</beats>
+              <beat-type>""" + str(beatbottom()) + """</beat-type>
+            </time>
+            <clef>
+              <sign>""" + str(clef()) + """</sign>
+              <line>""" + str(linenum()) + """</line>
+            </clef>
+        </attributes>"""
+  return cleftime
 
-cleftime = setupstart(DivCrotch, Key, BeatTop, BeatBottom, CleftType, LineNum)
-print(header)
-print(cleftime)
-
+print(header + "\n" + setupstart())
 
 #notesxml[notesarray[random]]
 
