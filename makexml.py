@@ -2,7 +2,7 @@ from random import randint
 
 fifthsdict = {"Cb": -7, "Gb": -6, "Db": -5, "Ab": -4, "Eb": -3, "Bb": -2, "F": -1, "C": 0, "G": 1, "D": 2, "A": 3, "E": 4, "B": 5, "F#": 6, "C#": 7,}
 
-header = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<!DOCTYPE score-partwise PUBLIC\n"-//Recordare//DTD MusicXML 3.1 Partwise//EN"\n"http://www.musicxml.org/dtds/partwise.dtd">\n<score-partwise version="3.1">\n<part-list>\n<score-part id="P1">\n<part-name>Music</part-name>\n</score-part>\n</part-list>\n<part id="P1">\n'
+header = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n\t<!DOCTYPE score-partwise PUBLIC\n\t"-//Recordare//DTD MusicXML 3.1 Partwise//EN"\n\t"http://www.musicxml.org/dtds/partwise.dtd">\n\t<score-partwise version="3.1">\n\t<part-list>\n\t<score-part id="P1">\n\t<part-name>Music</part-name>\n\t</score-part>\n\t</part-list>\n\t<part id="P1">\n\t'
 
 divisions = 8
 fifths = 0
@@ -71,27 +71,27 @@ def setupattributes():
   return output
 
 notesxml = {
-  "Af": "<step>A</step>"+'\n'+"<accidental>flat</accidental>"+'\n'+"<alter>-1</accidental>",
+  "Af": "<step>A</step>"+'\n\t'+"<accidental>flat</accidental>"+'\n\t'+"<alter>-1</alter>",
   "A": "<step>A</step>",
-  "As": "<step>A</step>"+'\n'+"<accidental>sharp</accidental>"+'\n'+"<alter>+1</alter>",
-  "Bf": "<step>B</step>"+'\n'+"<accidental>flat</accidental>"+'\n'+"<alter>-1</alter>",
+  "As": "<step>A</step>"+'\n\t'+"<accidental>sharp</accidental>"+'\n\t'+"<alter>+1</alter>",
+  "Bf": "<step>B</step>"+'\n\t'+"<accidental>flat</accidental>"+'\n\t'+"<alter>-1</alter>",
   "B": "<step>B</step>",
-  "Bs": "<step>B</step>"+'\n'+"<accidental>sharp</accidental>"+'\n'+"<alter>+1</alter>",
-  "Cf": "<step>C</step>"+'\n'+"<accidental>flat</accidental>"+'\n'+"<alter>-1</alter>",
+  "Bs": "<step>B</step>"+'\n\t'+"<accidental>sharp</accidental>"+'\n\t'+"<alter>+1</alter>",
+  "Cf": "<step>C</step>"+'\n\t'+"<accidental>flat</accidental>"+'\n\t'+"<alter>-1</alter>",
   "C": "<step>C</step>",
-  "Cs": "<step>C</step>"+'\n'+"<accidental>sharp</accidental>",
-  "Df": "<step>D</step>"+'\n'+"<accidental>flat</accidental>"+'\n'+"<alter>-1</alter>",
+  "Cs": "<step>C</step>"+'\n\t'+"<accidental>sharp</accidental>",
+  "Df": "<step>D</step>"+'\n\t'+"<accidental>flat</accidental>"+'\n\t'+"<alter>-1</alter>",
   "D": "<step>D</step>",
-  "Ds": "<step>D</step>"+'\n'+"<accidental>sharp</accidental>"+'\n'+"<alter>+1</alter>",
-  "Ef": "<step>E</step>"+'\n'+"<accidental>flat</accidental>"+'\n'+"<alter>-1</alter>",
+  "Ds": "<step>D</step>"+'\n\t'+"<accidental>sharp</accidental>"+'\n\t'+"<alter>+1</alter>",
+  "Ef": "<step>E</step>"+'\n\t'+"<accidental>flat</accidental>"+'\n\t'+"<alter>-1</alter>",
   "E": "<step>E</step>",
-  "Es": "<step>E</step>"+'\n'+"<accidental>sharp</accidental>"+'\n'+"<alter>+1</alter>",
-  "Ff": "<step>F</step>"+'\n'+"<accidental>flat</accidental>"+'\n'+"<alter>-1</alter>",
+  "Es": "<step>E</step>"+'\n\t'+"<accidental>sharp</accidental>"+'\n\t'+"<alter>+1</alter>",
+  "Ff": "<step>F</step>"+'\n\t'+"<accidental>flat</accidental>"+'\n\t'+"<alter>-1</alter>",
   "F": "<step>F</step>",
-  "Fs": "<step>F</step>"+'\n'+"<accidental>sharp</accidental>"+'\n'+"<alter>+1</alter>",
-  "Gf": "<step>G</step>"+'\n'+"<accidental>flat</accidental>"+'\n'+"<alter>-1</alter>",
+  "Fs": "<step>F</step>"+'\n\t'+"<accidental>sharp</accidental>"+'\n\t'+"<alter>+1</alter>",
+  "Gf": "<step>G</step>"+'\n\t'+"<accidental>flat</accidental>"+'\n\t'+"<alter>-1</alter>",
   "G": "<step>G</step>",
-  "Gs": "<step>G</step>"+'\n'+"<accidental>sharp</accidental>"+'\n'+"<alter>+1</alter>"}
+  "Gs": "<step>G</step>"+'\n\t'+"<accidental>sharp</accidental>"+'\n\t'+"<alter>+1</alter>"}
 notenames = ['Af', 'A', 'Bf', 'B', 'C', 'Cs', 'D', 'Ef', 'E', 'F', 'Fs', 'G']
 lengthxml = {
   "sb": "<duration>" + str(divisions * 4) + "</duration>",
@@ -119,7 +119,7 @@ def make_note(step, len):
     global notesxml
     global divisions_left_in_bar
     global measurenumber
-    output = """\n     <note>
+    output = """\n\t     <note>
     <pitch>
       """+str(notesxml[step])+"""
       <octave>""" + str(octaveposition) + """</octave>
@@ -128,7 +128,7 @@ def make_note(step, len):
   </note>"""
     divisions_left_in_bar -= lengths_as_divisions[str(len)]
     if divisions_left_in_bar == 0:
-      output += "\n</measure>\n\t" + "<measure number =" + "'" + str(measurenumber) + "'" ">"
+      output += "\n\t</measure>\n\t\t" + "<measure number =" + "'" + str(measurenumber) + "'" ">"
       measurenumber += 1
       divisions_left_in_bar += timesigtop * (divisions / (timesigbottom / 4))
       return output
@@ -140,15 +140,16 @@ notes = ""
 
 for i in range (0, 1000):
       step = str(notenames[randint(0, 11)])
-      notes += make_note(step, "sq")
+      notes += make_note(step, "c")
 
 
-notes += "</measure>\n</part>\n</score-partwise>"
+notes += "</measure>\n\t</part>\n\t</score-partwise>"
 
 
 
 file = open("test.xml", "a")
-file.write(header + setupattributes() + notes)
+everything = header + setupattributes() + notes
+file.write(everything)
 file.close
 
 
