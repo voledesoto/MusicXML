@@ -2,41 +2,58 @@ from random import randint
 
 fifthsdict = {"Cb": -7, "Gb": -6, "Db": -5, "Ab": -4, "Eb": -3, "Bb": -2, "F": -1, "C": 0, "G": 1, "D": 2, "A": 3, "E": 4, "B": 5, "F#": 6, "C#": 7,}
 
-print(fifthsdict[0])
-
 header = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<!DOCTYPE score-partwise PUBLIC\n"-//Recordare//DTD MusicXML 3.1 Partwise//EN"\n"http://www.musicxml.org/dtds/partwise.dtd">\n<score-partwise version="3.1">\n<part-list>\n<score-part id="P1">\n<part-name>Music</part-name>\n</score-part>\n</part-list>\n<part id="P1">\n'
+
+divisions = 8
+fifths = 0
+timesigtop = 4
+timesigbottom = 4
+sign = ""
+clefpos = 0
 
 
 def divcrotch():
-      return input("Divisions of crotchet: ")
+      global divisions
+      divisions = input("Divisions of crotchet: ")
+      return divisions
 def key():
       global fifthsdict
       return fifthsdict[str(raw_input("Key: "))]
 def beattop():
-      return input("Beats: ")
+      global timesigtop
+      timesigtop = int(input("Beats: "))
+      return timesigtop
 def beatbottom():
-      return input("Beat Type: ")
+      global timesigbottom
+      timesigbottom = int(input("Beat Type: "))
+      return timesigbottom
 def clef():
+      global sign
       output = str(input("1 Treble, 2 Bass: "))
       if output == 1:
-        return "G"
+        sign = "G"
+        return sign
       else:
-        return "F"
-def linenum():   
-      return input("Clef position: ")    
+        sign = "F"
+        return sign
+def linenum(): 
+      global clefpos
+      clefpos = input("Clef position: ") 
+      return clefpos
 
 
 
 #or with notes use 'keypositions+x % 21'
 #x being the step between the keys in a circle
 #(%21 is so that you don't leave length of the array)
+
 octaveposition = 4
 measurenumber = 1
-TotalBeats = str()
+TotalBeats = 0
 
-def setupstart():
+def setupattributes():
   global measurenumber  
-  cleftime = """<measure number=""" + str(measurenumber) +""">
+  output = """<measure number=""" + "'" + str(measurenumber) + "'" + """>
       <attributes>
           <divisions>""" + str(divcrotch()) +"""</divisions>
             <key>
@@ -51,76 +68,90 @@ def setupstart():
               <line>""" + str(linenum()) + """</line>
             </clef>
         </attributes>"""
-  return cleftime
-
-print(header + "\n" + setupstart())
-
-
-# NEEDED? notesarray = ["Af", "A", "As", "Bf", "B", "Bs", "Cf", "C", "Cs", "Df", "D", "Ds", "Ef", "E", "Es", "Ff", "F", "Fs", "Gf", "G", "Gs"]
+  return output
 
 notesxml = {
-  "Af": "<step>A</step>"+'\n'+"<accidental>flat</accidental>",
+  "Af": "<step>A</step>"+'\n'+"<accidental>flat</accidental>"+'\n'+"<alter>-1</accidental>",
   "A": "<step>A</step>",
-  "As": "<step>A</step>"+'\n'+"<accidental>sharp</accidental>",
-  "Bf": "<step>B</step>"+'\n'+"<accidental>flat</accidental>",
+  "As": "<step>A</step>"+'\n'+"<accidental>sharp</accidental>"+'\n'+"<alter>+1</alter>",
+  "Bf": "<step>B</step>"+'\n'+"<accidental>flat</accidental>"+'\n'+"<alter>-1</alter>",
   "B": "<step>B</step>",
-  "Bs": "<step>B</step>"+'\n'+"<accidental>sharp</accidental>",
-  "Cf": "<step>C</step>"+'\n'+"<accidental>flat</accidental>",
+  "Bs": "<step>B</step>"+'\n'+"<accidental>sharp</accidental>"+'\n'+"<alter>+1</alter>",
+  "Cf": "<step>C</step>"+'\n'+"<accidental>flat</accidental>"+'\n'+"<alter>-1</alter>",
   "C": "<step>C</step>",
   "Cs": "<step>C</step>"+'\n'+"<accidental>sharp</accidental>",
-  "Df": "<step>D</step>"+'\n'+"<accidental>flat</accidental>",
+  "Df": "<step>D</step>"+'\n'+"<accidental>flat</accidental>"+'\n'+"<alter>-1</alter>",
   "D": "<step>D</step>",
-  "Ds": "<step>D</step>"+'\n'+"<accidental>sharp</accidental>",
-  "Ef": "<step>E</step>"+'\n'+"<accidental>flat</accidental>",
+  "Ds": "<step>D</step>"+'\n'+"<accidental>sharp</accidental>"+'\n'+"<alter>+1</alter>",
+  "Ef": "<step>E</step>"+'\n'+"<accidental>flat</accidental>"+'\n'+"<alter>-1</alter>",
   "E": "<step>E</step>",
-  "Es": "<step>E</step>"+'\n'+"<accidental>sharp</accidental>",
-  "Ff": "<step>F</step>"+'\n'+"<accidental>flat</accidental>",
+  "Es": "<step>E</step>"+'\n'+"<accidental>sharp</accidental>"+'\n'+"<alter>+1</alter>",
+  "Ff": "<step>F</step>"+'\n'+"<accidental>flat</accidental>"+'\n'+"<alter>-1</alter>",
   "F": "<step>F</step>",
-  "Fs": "<step>F</step>"+'\n'+"<accidental>sharp</accidental>",
-  "Gf": "<step>G</step>"+'\n'+"<accidental>flat</accidental>",
+  "Fs": "<step>F</step>"+'\n'+"<accidental>sharp</accidental>"+'\n'+"<alter>+1</alter>",
+  "Gf": "<step>G</step>"+'\n'+"<accidental>flat</accidental>"+'\n'+"<alter>-1</alter>",
   "G": "<step>G</step>",
-  "Gs": "<step>G</step>"+'\n'+"<accidental>sharp</accidental>"}
-
-lengtharrary = ["Sb", "M", "C", "Q", "Sq", "Dq"]
-
-#i guessed these duration and type values
+  "Gs": "<step>G</step>"+'\n'+"<accidental>sharp</accidental>"+'\n'+"<alter>+1</alter>"}
+notenames = ['Af', 'A', 'Bf', 'B', 'C', 'Cs', 'D', 'Ef', 'E', 'F', 'Fs', 'G']
 lengthxml = {
-  "Sb": "<duration>4</duration>"+'\n'+"    <type>whole</type>",
-  "M": "<duration>2</duration>"+'\n'+"    <type>whole</type>",
-  "C": "<duration>1</duration>"+'\n'+"    <type>whole</type>",
-  "Q": "<duration>1</duration>"+'\n'+"    <type>half</type>",
-  "Sq": "<duration>1</duration>"+'\n'+"    <type>quater</type>",
-  "Dq": "<duration>1</duration>"+'\n'+"    <type>eigth</type>"
-}
+  "sb": "<duration>" + str(divisions * 4) + "</duration>",
+  "m": "<duration>" + str(divisions * 2) + "</duration>",
+  "c": "<duration>" + str(divisions) + "</duration>",
+  "q": "<duration>" + str(divisions / 2) + "</duration>",
+  "sq": "<duration>" + str(divisions / 4) + "</duration>",
+  "dsq": "<duration>" + str(divisions / 8) + "</duration>",}
+lengthnames = ['sb', 'm', 'c', 'q', 'sq', 'dsq']
+lengths_as_divisions = {
+  "sb": divisions * 4,
+  "m": divisions * 2,
+  "c": divisions,
+  "q": divisions / 2,
+  "sq": divisions / 4,
+  "dsq": divisions / 8 }
 
-lengthvals = {"Sb": 1, "M": 1/2, "C": 1/4, "Q": 1/8, "Sq": 1/16, "Dq": 1/32}
-leftlengthvals = [str(1), str(1/2), str(1/4), str(1/8), str(1/16), str(1/32)]
+# Duration is a multiple of the maximum division of quarter note e.g. if division is 24, duration24 is a crotchet.
 
+divisions_left_in_bar = timesigtop * (divisions / (timesigbottom / 4))
 
-def make_note(step, length):
-    note_string = """  <note>
+def make_note(step, len):
+    global octaveposition
+    global lengthxml
+    global notesxml
+    global divisions_left_in_bar
+    global measurenumber
+    output = """\n     <note>
     <pitch>
-      <step> """ + str() + """
-      <octave>""" + str() + """</octave>
+      """+str(notesxml[step])+"""
+      <octave>""" + str(octaveposition) + """</octave>
     </pitch>
-    """ + str() + """
+    """ + str(lengthxml[len]) + """
   </note>"""
-    return note_string
-
-testnote = make_note(2, 2)
-
-
-
-
-
-
-def addtuple(actual, normal):
-  tuplestring = "<time-modification>"+'\n'+"\t<actual-notes>"+str(actual)+"</actual-notes>"+'\n'+"<normal-notes>"+str(normal)+"\t</normal-notes>"+'\n'+"</time-modification>"
-  return tuplestring
+    divisions_left_in_bar -= lengths_as_divisions[str(len)]
+    if divisions_left_in_bar == 0:
+      output += "\n</measure>\n\t" + "<measure number =" + "'" + str(measurenumber) + "'" ">"
+      measurenumber += 1
+      divisions_left_in_bar += timesigtop * (divisions / (timesigbottom / 4))
+      return output
+    else:        
+      return output
 
 
-#so far only just prstring strings that will be written to file
+notes = ""
 
-#f = open("output.xml", "a")
-#f.write(contents)
-#f.close
+for i in range (0, 1000):
+      step = str(notenames[randint(0, 11)])
+      notes += make_note(step, "sq")
+
+
+notes += "</measure>\n</part>\n</score-partwise>"
+
+
+
+file = open("test.xml", "a")
+file.write(header + setupattributes() + notes)
+file.close
+
+
+
+
+
