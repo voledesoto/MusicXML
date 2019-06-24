@@ -4,7 +4,7 @@ fifthsdict = {"Cb": -7, "Gb": -6, "Db": -5, "Ab": -4, "Eb": -3, "Bb": -2, "F": -
 
 header = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n\t<!DOCTYPE score-partwise PUBLIC\n\t"-//Recordare//DTD MusicXML 3.1 Partwise//EN"\n\t"http://www.musicxml.org/dtds/partwise.dtd">\n\t<score-partwise version="3.1">\n\t<part-list>\n\t<score-part id="P1">\n\t<part-name>Music</part-name>\n\t</score-part>\n\t</part-list>\n\t<part id="P1">\n\t'
 
-divisions = 8
+divisions = 32
 fifths = 0
 timesigtop = 4
 timesigbottom = 4
@@ -12,10 +12,6 @@ sign = ""
 clefpos = 0
 
 
-def divcrotch():
-      global divisions
-      divisions = input("Divisions of crotchet: ")
-      return divisions
 def key():
       global fifthsdict
       return fifthsdict[str(raw_input("Key: "))]
@@ -55,7 +51,7 @@ def setupattributes():
   global measurenumber  
   output = """<measure number=""" + "'" + str(measurenumber) + "'" + """>
       <attributes>
-          <divisions>""" + str(divcrotch()) +"""</divisions>
+          <divisions>""" + str(divisions) +"""</divisions>
             <key>
               <fifths>""" + str(key()) + """</fifths>
             </key>
@@ -69,6 +65,8 @@ def setupattributes():
             </clef>
         </attributes>"""
   return output
+
+attributes = str(setupattributes())
 
 notesxml = {
   "Af": "<step>A</step>"+'\n\t'+"<accidental>flat</accidental>"+'\n\t'+"<alter>-1</alter>",
@@ -111,7 +109,20 @@ lengths_as_divisions = {
 
 # Duration is a multiple of the maximum division of quarter note e.g. if division is 24, duration24 is a crotchet.
 
-divisions_left_in_bar = timesigtop * (divisions / (timesigbottom / 4))
+divisions_left_in_bar = 0
+
+if timesigbottom == 1:
+  divisions_left_in_bar = timesigtop * (divisions * 4)
+elif timesigbottom == 2:
+  divisions_left_in_bar = timesigtop * (divisions * 2)
+elif timesigbottom == 4:
+  divisions_left_in_bar = timesigtop * divisions
+elif timesigbottom == 8:
+  divisions_left_in_bar = timesigtop * (divisions / 2)
+elif timesigbottom == 16:
+  divisions_left_in_bar = timesigbottom * (divisions / 4)
+
+mainbarlength = divisions_left_in_bar
 
 def make_note(step, len):
     global octaveposition
@@ -126,29 +137,32 @@ def make_note(step, len):
     </pitch>
     """ + str(lengthxml[len]) + """
   </note>"""
-    divisions_left_in_bar -= lengths_as_divisions[str(len)]
+    divisions_left_in_bar -= lengths_as_divisions[len]
     if divisions_left_in_bar == 0:
       output += "\n\t</measure>\n\t\t" + "<measure number =" + "'" + str(measurenumber) + "'" ">"
       measurenumber += 1
-      divisions_left_in_bar += timesigtop * (divisions / (timesigbottom / 4))
+      divisions_left_in_bar += mainbarlength
       return output
-    else:        
+    else:
       return output
 
 
 notes = ""
 
-for i in range (0, 1000):
+def generate(times):
+  global notes
+  for i in range (0, times):
       step = str(notenames[randint(0, 11)])
-      notes += make_note(step, "c")
+      notes += make_note(step, "q")
 
+generate(100)
 
 notes += "</measure>\n\t</part>\n\t</score-partwise>"
 
 
 
 file = open("test.xml", "a")
-everything = header + setupattributes() + notes
+everything = header + attributes + notes
 file.write(everything)
 file.close
 
